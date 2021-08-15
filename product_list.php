@@ -64,7 +64,8 @@ $row = $pdo->query($sql)->fetchALL();
                 <ul class="pagination page-btn">
                     
                     <!-- 前一頁icon -->
-                    <li class="page-item <?= $page<=1? 'disable':'' ?> ">
+                    <!-- 如果GET拿到的page值<1, 直接disable 讓他沒有功能(但還是可以按) -->
+                    <li class="page-item <?= $page<=1 ? 'disable':'' ?>">
                         <a class="page-link"
                         href="?<?php $qs['page']=$page-1; echo http_build_query($qs); ?>">
                             <i class="fas fa-angle-left"></i>
@@ -75,6 +76,7 @@ $row = $pdo->query($sql)->fetchALL();
                             if($i>=1 and $i<=$totalPages):
                                 $qs['page'] = $i;
                         ?>
+                    <!-- 如果頁碼跟GET拿到的頁碼一樣,設定active 讓按鈕有反灰效果表示按到, -->
                     <li class="page-item <?= $i==$page ? 'active' : '' ?>">
                         <a class="page-link" href="?<?= http_build_query($qs)?>">
                             <?= $i ?>
