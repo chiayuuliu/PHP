@@ -19,7 +19,7 @@
 
             </ul>
                 <form class="form-inline my-2 my-lg-0">
-                    <a class="nav-link" href="">新增商品 </a>
+                    <a class="nav-link" href="product_create.php">新增商品 </a>
                 </form>
         </div>
     </div>
