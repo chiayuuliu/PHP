@@ -17,7 +17,7 @@ $sql = sprintf("SELECT * FROM `products_food` ORDER BY sid LIMIT %s, %s", ($page
 $cate = isset($_GET['cate']) ? intval($_GET['cate']) : 0;
 
 if(!$cate){
-    $sql = "SELECT * FROM `products_food` WHERE 1";
+    $sql = "SELECT * FROM `products_food` ORDER BY sid DESC;";
 }else{
     $sql = "SELECT `sid`, `name`, `product_id`, `price`, `brand`, `introduction`, `flavor`, `cate_sid`, `img`, `content` FROM `products_food` WHERE `cate_sid`=$cate";
 }
@@ -52,11 +52,15 @@ $row = $pdo->query($sql)->fetchALL();
 
     .page-btn{
         margin-top: 10px;
+    }
 
+    img{
+        width: 80px;
     }
     
 </style>
 
+<!-- 頁碼 -->
 <div class="container">
     <div class="row">
         <div class="col">
@@ -132,8 +136,7 @@ $row = $pdo->query($sql)->fetchALL();
                             <td><?= $r['brand'] ?></td>
                             <td><?= $r['price'] ?></td>
                             <td><?= $r['content'] ?></td>
-                            <td><?= $r['img'] ?></td>
-
+                            <td><img src="./img/<?= $r['img'] ?>" alt=""></td>
                             <td>
                                 <a href="data-edit.php?sid=<?= $r['sid'] ?>">
                                     <i class="fas fa-edit"></i>
