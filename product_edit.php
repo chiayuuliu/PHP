@@ -53,7 +53,8 @@ if (empty($r)) {
 
                         <div class="form-group">
                             <label for="brand">品牌</label>
-                            <select class="form-control" id="brand" name="brand" value="<?= htmlentities($r['brand']) ?>">
+                            <select class="form-control" id="brand" name="brand"
+                            value="<?= htmlentities($r['brand']) ?>">
                                 <option value="Fitme">Fitme</option>
                                 <option value="食安先生">食安先生</option>
                             </select>
@@ -62,7 +63,7 @@ if (empty($r)) {
                         <div class="form-group">
                             <label for="cate">商品類別</label>
                             <select class="form-control" id="cate" name="cate"
-                            value="<?= htmlentities($r['cate']) ?>">
+                            value="<?= htmlentities($r['cate_sid']) ?>">
                                 <option value="1">快速上桌</option>
                                 <option value="2">健身專區</option>
                                 <option value="3">嚴選食材</option>
