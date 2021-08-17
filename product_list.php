@@ -2,24 +2,28 @@
 include __DIR__.'/init.php';
 
 // ------------------------頁數設定-----------------------
+// $where = 'WHERE 1 ';
+
 $perPage = 5;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-$totalRows = $pdo->query("SELECT count(1) FROM `products_food`")
+$totalRows = $pdo->query("SELECT count(1) FROM `products_food` WHERE 1;")
     ->fetch(PDO::FETCH_NUM)[0];
 
 $totalPages = ceil($totalRows/$perPage);
 
-$sql = sprintf("SELECT * FROM `products_food` ORDER BY sid LIMIT %s, %s", ($page-1)*$perPage, $perPage);
+$sql = sprintf("SELECT * FROM `products_food` ORDER BY sid DESC LIMIT %s, %s", ($page-1)*$perPage, $perPage);
 
-
+$qs = [];
 // ------------------------分類資料呈現--------------------
 $cate = isset($_GET['cate']) ? intval($_GET['cate']) : 0;
 
 if(!$cate){
-    $sql = "SELECT * FROM `products_food` ORDER BY sid DESC;";
+    $sql = sprintf("SELECT * FROM `products_food` ORDER BY sid DESC LIMIT %s, %s", ($page-1)*$perPage, $perPage);
 }else{
-    $sql = "SELECT `sid`, `name`, `product_id`, `price`, `brand`, `introduction`, `flavor`, `cate_sid`, `img`, `content` FROM `products_food` WHERE `cate_sid`=$cate";
+
+    $sql = "SELECT * FROM `products_food` WHERE `cate_sid`=$cate";
+
 }
 
 $row = $pdo->query($sql)->fetchALL();
@@ -79,7 +83,7 @@ $row = $pdo->query($sql)->fetchALL();
                 <ul class="pagination page-btn">
                     
                     <!-- 前一頁icon -->
-                    <li class="page-item <?= $page<=1 ? 'disable':'' ?>">
+                    <li class="page-item <?= $page<=1? 'disabled':'' ?>">
                         <a class="page-link"
                         href="?<?php $qs['page']=$page-1; echo http_build_query($qs); ?>">
                             <i class="fas fa-angle-left"></i>
@@ -90,16 +94,15 @@ $row = $pdo->query($sql)->fetchALL();
                             if($i>=1 and $i<=$totalPages):
                                 $qs['page'] = $i;
                         ?>
-                    <!-- 如果頁碼跟GET拿到的頁碼一樣,設定active 讓按鈕有反灰效果表示按到, -->
                     <li class="page-item <?= $i==$page ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query($qs)?>">
-                            <?= $i ?>
+                        <a class="page-link" 
+                        href="?<?= http_build_query($qs)?>">
+                        <?= $i ?>
                         </a>
                     </li>
                     <?php endif;
                         endfor; ?>
     
-                    <!-- 下一頁icon, 如果頁數>=總頁數,icon無效用 -->
                     <li class="page-item <?= $page>=$totalPages ? 'disabled' : '' ?>">
                         <a class="page-link" href="?<?php $qs['page']=$page+1; echo http_build_query($qs);?>">
                             <i class="fas fa-angle-right"></i>
