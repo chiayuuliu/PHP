@@ -57,7 +57,18 @@ $row = $pdo->query($sql)->fetchALL();
     img{
         width: 80px;
     }
-    
+    i{
+        font-size: 20px;
+    }
+    .icon{
+        text-align: center;
+    }
+    .fa-edit{
+        color: darkblue;
+    }
+    .fa-trash-alt{
+        color: darkred;
+    }
 </style>
 
 <!-- 頁碼 -->
@@ -68,7 +79,6 @@ $row = $pdo->query($sql)->fetchALL();
                 <ul class="pagination page-btn">
                     
                     <!-- 前一頁icon -->
-                    <!-- 如果GET拿到的page值<1, 直接disable 讓他沒有功能(但還是可以按) -->
                     <li class="page-item <?= $page<=1 ? 'disable':'' ?>">
                         <a class="page-link"
                         href="?<?php $qs['page']=$page-1; echo http_build_query($qs); ?>">
@@ -95,7 +105,6 @@ $row = $pdo->query($sql)->fetchALL();
                             <i class="fas fa-angle-right"></i>
                         </a>
                     </li>
-                    <!-- <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
                 </ul>
             </nav>
         </div>
@@ -124,9 +133,9 @@ $row = $pdo->query($sql)->fetchALL();
                 <tbody>
                     <?php foreach($row as $r): ?>
                         <tr data-sid="<?= $r['sid'] ?>" >
-                            <td>
-                                <a href="data-delete.php?sid=<?= $r['sid'] ?>"
-                                onclick="return confirm('確定要刪除編號<?= $r['sid'] ?>的資料嗎')">
+                            <td class="icon">
+                                <a href="product_delete.php?sid=<?= $r['sid'] ?>"
+                                onclick="return confirm('確定要刪除<?= $r['name'] ?>的商品資料嗎')">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
@@ -137,8 +146,8 @@ $row = $pdo->query($sql)->fetchALL();
                             <td><?= $r['price'] ?></td>
                             <td><?= $r['content'] ?></td>
                             <td><img src="./img/<?= $r['img'] ?>" alt=""></td>
-                            <td>
-                                <a href="data-edit.php?sid=<?= $r['sid'] ?>">
+                            <td class="icon" >
+                                <a href="product_edit.php?sid=<?= $r['sid'] ?>">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </td>
