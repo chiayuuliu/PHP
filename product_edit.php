@@ -3,14 +3,16 @@ include __DIR__.'/init.php';
 
 $title = '修改資料';
 
+// print_r($_SESSION); exit;
+
 $sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
 
 $sql = "SELECT * FROM `products_food` WHERE sid =$sid";
 
 $r = $pdo->query($sql)->fetch();
 
-// print_r($r['cate_sid']); exit;
-// if($r[cate_sid])
+// print_r($r); exit;
+
 
 if (empty($r)) {
     header('Location: product_list.php');
@@ -66,7 +68,7 @@ if (empty($r)) {
                                 <option value="3">嚴選食材</option>
                             </select>
                         </div>
-
+                        
                         <div class="form-group">
                         <label for="price">價錢</label>
                             <input type="number" class="form-control" id="price" name="price"
@@ -121,6 +123,8 @@ if (empty($r)) {
                     console.log(obj);
                     if (obj.success) {
                         alert('修改成功')
+                        location.href = 'product_list.php';
+
                     } else {
                         alert(obj.error);
                     }
