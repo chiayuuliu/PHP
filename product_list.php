@@ -18,7 +18,7 @@ if (!$cate) {
 } else {
     $where .= "AND cate_sid = $cate";
     $qs['cate'] = $cate;
-    $sql = "SELECT * FROM `products_food` WHERE `cate_sid`=$cate";
+    $sql = "SELECT * FROM `products_food` WHERE `cate_sid`=$cate ORDER BY `sid` DESC;";
     $rows = $pdo->query($sql)->fetchALL();
 }
 
@@ -98,9 +98,13 @@ $totalPages = ceil($totalRows / $perPage);
 
     .btnwrap div {
         width: 100px;
-        color: darkblue;
+        color: lightblue;
     }
-
+    .btnwrap div a{
+        text-decoration: none;
+        color: darkblue;
+        opacity: 0.8;
+    }
     .page {
         width: 30%;
         display: flex;
@@ -109,8 +113,11 @@ $totalPages = ceil($totalRows / $perPage);
 
     .create a {
         /* text-decoration: none; */
-        color: darkred;
+        color: darkslateblue;
         font-weight: bold;
+    }
+    .btnwrap div a:hover{
+        opacity: 1;
     }
 </style>
 
