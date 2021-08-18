@@ -15,7 +15,9 @@ $title = '新增商品資料';
     .card{
         margin-top: 20px;
     }
-
+    #preview{
+        width: 180px;
+    }
 </style>
 
 <div class="container">
@@ -29,15 +31,11 @@ $title = '新增商品資料';
                         <div class="form-group">
                             <label for="name">商品名稱</label>
                             <input type="text" class="form-control" id="name" name="name">
-                            <small class="form-text "></small>
                         </div>
 
                         <div class="form-group">
                             <label for="brand">品牌</label>
-                            <select class="form-control" id="brand" name="brand" >
-                                <option value="Fitme">Fitme</option>
-                                <option value="食安先生">食安先生</option>
-                            </select>
+                            <input type="text" class="form-control" id="brand" name="brand">
                         </div>
 
                         <div class="form-group">
@@ -73,7 +71,8 @@ $title = '新增商品資料';
                         <!-- 商品圖 -->
                         <div class="form-group">
                             <label for="product_img">商品圖</label>
-                            <input type="file" class="form-control" id="product_img" name="product_img">
+                            <input type="file" class="form-control" id="upload" name="product_img"><br>
+                            <img id="preview" src="" alt="">
                         </div>
 
                         <br>
@@ -86,31 +85,51 @@ $title = '新增商品資料';
 </div>
 <?php include __DIR__.'./partials/scripts.php' ?>
 <script>
+    
+    var upload = document.getElementById('upload')
+    upload.addEventListener("change",handleFiles,false)
 
-    function checkForm(){
-
-    let isPass = true;
-    if (isPass) {
-        const fd = new FormData(document.form1);
-        fetch('product_create_api.php', {
-                method: 'POST',
-                body: fd
-            })
-            .then(r => r.json())
-            .then(obj => {
-                console.log(obj);
-                if (obj.success) {
-                    location.href = 'product_list.php';
-                } else {
-                    alert(obj.error);
-                }
-            })
-            .catch(error => {
-                console.log('error:', error);
-            });
+    function handleFiles(){
+        console.log(this)
+        readURL(this)
+    }
+    function readURL(input){
+        if(input.files && input.files[0]){
+            var reader = new FileReader()
+            reader.onload = function(e){
+                document.getElementById("preview").src = e.target.result
+            }
+            reader.readAsDataURL(input.files[0])
+        }
     }
 
 
+
+
+
+
+    function checkForm(){
+
+        let isPass = true;
+        if (isPass) {
+            const fd = new FormData(document.form1);
+            fetch('product_create_api.php', {
+                    method: 'POST',
+                    body: fd
+                })
+                .then(r => r.json())
+                .then(obj => {
+                    console.log(obj);
+                    if (obj.success) {
+                        location.href = 'product_list.php';
+                    } else {
+                        alert(obj.error);
+                    }
+                })
+                .catch(error => {
+                    console.log('error:', error);
+                });
+        }
     }
 
     
