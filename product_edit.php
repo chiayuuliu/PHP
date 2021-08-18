@@ -3,7 +3,6 @@ include __DIR__.'/init.php';
 
 $title = '修改資料';
 
-// print_r($_SESSION); exit;
 
 $sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
 
@@ -11,7 +10,7 @@ $sql = "SELECT * FROM `products_food` WHERE sid =$sid";
 
 $r = $pdo->query($sql)->fetch();
 
-// print_r($r); exit;
+// print_r($_POST); exit;
 
 
 if (empty($r)) {
@@ -29,6 +28,9 @@ if (empty($r)) {
     
     img{
         width: 180px;
+    }
+    #preview{
+        display: none;
     }
     .card{
         margin-top: 20px;
@@ -48,25 +50,19 @@ if (empty($r)) {
                         <div class="form-group">
                             <label for="name">商品名稱</label>
                             <input type="text" class="form-control" id="name" name="name" value="<?= htmlentities($r['name']) ?>">
-                            <small class="form-text "></small>
                         </div>
 
                         <div class="form-group">
                             <label for="brand">品牌</label>
-                            <select class="form-control" id="brand" name="brand"
-                            value="<?= htmlentities($r['brand']) ?>">
-                                <option value="Fitme">Fitme</option>
-                                <option value="食安先生">食安先生</option>
-                            </select>
+                            <input type="text" class="form-control" id="brand" name="brand" value="<?= htmlentities($r['brand']) ?>">
                         </div>
                         
                         <div class="form-group">
                             <label for="cate">商品類別</label>
-                            <select class="form-control" id="cate" name="cate"
-                            value="<?= htmlentities($r['cate_sid']) ?>">
-                                <option value="1">快速上桌</option>
-                                <option value="2">健身專區</option>
-                                <option value="3">嚴選食材</option>
+                            <select class="form-control" id="cate" name="cate">
+                                <option value="1"<?= $r['cate_sid']==1 ? 'selected':'' ?>>快速上桌</option>
+                                <option value="2"<?= $r['cate_sid']==2 ? 'selected':'' ?>>健身專區</option>
+                                <option value="3"<?= $r['cate_sid']==3 ? 'selected':'' ?>>嚴選食材</option>
                             </select>
                         </div>
                         
@@ -94,13 +90,14 @@ if (empty($r)) {
 
                         <div class="form-group">
                             <label for="product_img">商品圖</label>
-                            <input type="file" class="form-control" id="product_img" name="product_img">
-                            <img src="./img/<?= htmlentities($r['img']) ?>" alt="">
+                            <input type="file" class="form-control" id="upload" name="product_img">
+                            <br>
+                            <!-- 設定圖片預覽 -->
+                            <img id="preview" src="" alt="">
+                            <img id="old" src="./img/<?= htmlentities($r['img']) ?>" alt="">
                         </div>
-                        
                         <button type="submit" class="btn btn-primary">修改</button>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -108,7 +105,33 @@ if (empty($r)) {
 </div>
 <?php include __DIR__.'./partials/scripts.php' ?>
 <script>
-    
+    var upload = document.getElementById('upload')
+    var old = document.getElementById('old')
+    var preview = document.getElementById('preview')
+
+    // 設定upload 有改變的話觸發handleFiles function
+    upload.addEventListener("change",handleFiles,false)
+
+    function handleFiles(){
+        readURL(this)
+        // 設定顯示新圖檔
+        preview.style.display="block"
+    }
+    function readURL(input){
+        if(input.files && input.files[0]){
+            var reader = new FileReader()
+            // 設定舊圖檔消失
+            old.style.display="none";
+
+            reader.onload = function(e){
+                document.getElementById("preview").src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0])
+        }
+    }
+
+
+
     function checkForm() {
 
         let isPass = true;
